@@ -73,12 +73,12 @@ class ControlAnunciante extends ControlGeral {
      * @param String $telefone telefone do anunciante
      * @return Boolean retorna TRUE se os dados forem salvos com sucesso
      */
-    function alterar($id, $nome, $cpf, $dtNascimento, $telefone) {
+    function alterarAnunciante($id_anunciante, $nome, $endereco, $telefone, $email) {
 
         #invocar métódo  e passar parâmetros
         $objAnunciante = new modelAnunciante();
 
-        if ($objAnunciante->alterarAnunciante($id, $nome, $cpf, $dtNascimento, $telefone) == true) {
+        if ($objAnunciante->alterarAnunciante($id_anunciante, $nome, $endereco, $telefone, $email) == true) {
             #se for alterado com sucesso mostrar a mensagem
             $_SESSION['msg'] = "Alterado com sucesso!";
             #redirecionar
@@ -96,13 +96,13 @@ class ControlAnunciante extends ControlGeral {
      * @param Int $id id do anunciante
      * @return Boolean retorna TRUE se os dados for excluído sucesso
      */
-    function excluir($id) {
+    function excluirAnunciante($id_anunciante) {
 
         #invocar métódo  e passar parâmetros
         $objAnunciante = new modelAnunciante();
 
         #invocar métódo  e passar parâmetros
-        if ($objAnunciante->excluirAnunciante($id) == true) {
+        if ($objAnunciante->excluirAnunciante($id_anunciante) == true) {
             #se for excluído com sucesso mostrar a mensagem e redirecionar
             $_SESSION['msg'] = "Excluído com sucesso!";
             header("location: ../view/modulo.php?modulo=anunciante&menu=consultar");
