@@ -10,6 +10,9 @@ header('Content-Type: text/html; charset=UTF-8');
 
 #cria o objeto de controle
 $cg = new ControlGeral();
+#validar sessao
+$cg->validarSessao();
+
 ?>
 
 <html lang="pt-br">

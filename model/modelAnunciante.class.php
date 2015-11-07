@@ -142,18 +142,18 @@ class ModelAnunciante extends modelConexao {
      */
     function inserirAnunciante($nome, $endereco, $telefone, $email, $senha) {
 
-        #setar os dados
+#setar os dados
         $this->setNome($nome);
         $this->setEndereco($endereco);
         $this->setTelefone($telefone);
         $this->setEmail($email);
         $this->setSenha($senha);
 
-        #montar a consulta
+#montar a consulta
         $sql = "INSERT INTO tb_anunciante(id_anunciante, nome, endereco, telefone, email, senha)"
                 . " VALUES (null,:nome,:endereco,:telefone,:email,:senha)";
 
-        #realizar a blidagem dos dados
+#realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
             $query = $bd->prepare($sql);
@@ -178,16 +178,16 @@ class ModelAnunciante extends modelConexao {
      */
     public function alterarAnunciante($id_anunciante, $nome, $endereco, $telefone, $email) {
 
-        #setar os dados
+#setar os dados
         $this->setId_anunciante($id_anunciante);
         $this->setNome($nome);
         $this->setEndereco($endereco);
         $this->setTelefone($telefone);
         $this->setEmail($email);
-        #montar a consulta
+#montar a consulta
         $sql = "UPDATE  tb_anunciante  SET  nome=:nome, endereco=:endereco, telefone=:telefone, email=:email WHERE id_anunciante=:id_anunciante";
 
-        #realizar a blidagem dos dados
+#realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
             $query = $bd->prepare($sql);
@@ -199,8 +199,8 @@ class ModelAnunciante extends modelConexao {
             $query->execute();
             return true;
         } catch (PDOException $e) {
- echo $e->getMessage();
- break;
+            echo $e->getMessage();
+            break;
             return false;
         }
     }
@@ -213,13 +213,13 @@ class ModelAnunciante extends modelConexao {
      */
     public function excluirAnunciante($id_anunciante) {
 
-        #setar os dados
+#setar os dados
         $this->setId_anunciante($id_anunciante);
 
-        #montar a consulta
+#montar a consulta
         $sql = "DELETE FROM tb_anunciante WHERE id_anunciante =:id_anunciante";
 
-        #realizar a blidagem dos dados
+#realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
             $query = $bd->prepare($sql);
@@ -227,6 +227,46 @@ class ModelAnunciante extends modelConexao {
             $query->execute();
             return true;
         } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Método utilizado para <descrição>
+     * @access public 
+     * @param <tipo do parâmero> $<nome parâmetro> <descrição do parâmetro>
+     * @return <tipo do retorno> <descrição do reorno>
+     */
+    function validarAnunciante($email, $senha) {
+
+#setar os dados
+        $this->setEmail($email);
+        $this->setSenha($senha);
+
+#montar a consulta
+        $sql = "SELECT COUNT(*) as valor FROM tb_anunciante WHERE email=:email and senha=:senha";
+
+#realizar a blidagem dos dados
+        try {
+            $bd = $this->conectar();
+            $query = $bd->prepare($sql);
+            $query->bindValue(':email', $this->getEmail(), PDO::PARAM_STR);
+            $query->bindValue(':senha', md5($this->getSenha()), PDO::PARAM_STR);
+            $query->execute();
+            $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+#varre o vetor de resultado
+            foreach ($resultado as $item) {
+#valida o usuario e senha
+                $valor = $item['valor'];
+            }
+
+            if ($valor == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+
             return false;
         }
     }

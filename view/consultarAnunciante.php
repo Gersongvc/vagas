@@ -1,6 +1,6 @@
 <?php
 #iniciar_sessao
-#session_start();
+session_start();
 #função para resolver problema de header
 ob_start();
 
@@ -9,6 +9,12 @@ header('Content-Type: text/html; charset=UTF-8');
 
 #carrega as classes automaticamente
 include_once 'autoload.php';
+
+#cria o objeto de controle
+$cg = new ControlGeral();
+#validar sessao
+$cg->validarSessao();
+
 
 #cria o objeto de controle
 $objCA = new ControlAnunciante();

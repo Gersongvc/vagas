@@ -1,7 +1,6 @@
 ﻿<?php
 #iniciar_sessao
 #session_start();
-
 #carregar as classes dinamicamente
 include_once 'autoload.php';
 
@@ -50,12 +49,29 @@ class ControlAnunciante extends ControlGeral {
         if ($senha == $confirmar) {
             #salvar no banco
             $resultado = $objAnunciante->inserirAnunciante($nome, $endereco, $telefone, $email, md5($senha));
-            if ($resultado==true)
-            {
+            if ($resultado == true) {
                 echo 'Salvo com Sucesso';
+            } else {
+                echo 'Erro ao salvar';
             }
-            else
-            {
+        } else {
+            echo 'As senhas devem ser iguais';
+        }
+    }
+    
+        function inserirCadastro($nome, $endereco, $telefone, $email, $senha, $confirmar) {
+
+        #invocar métódo  e passar parâmetros
+        $objAnunciante = new modelAnunciante();
+
+        #verificar senha
+        if ($senha == $confirmar) {
+            #salvar no banco
+            $resultado = $objAnunciante->inserirAnunciante($nome, $endereco, $telefone, $email, md5($senha));
+            if ($resultado == true) {
+                $_SESSION ['msg'] = 'Inserido com sucesso';
+                header("location: ../view/modulo.php?modulo=login");
+            } else {
                 echo 'Erro ao salvar';
             }
         } else {
@@ -109,6 +125,38 @@ class ControlAnunciante extends ControlGeral {
         } else {
             $_SESSION['msg'] = "Erro ao excluir!";
             header("location: ../view/modulo.php?modulo=anunciante&menu=consultar");
+        }
+    }
+
+    /**
+     * Método utilizado validar os dados dos anunciantes e invocar o método alterarAnunciante no model
+     * @access public 
+     * @param Int $id id do anunciante
+     * @param String $nome nome do anunciante
+     * @param String $cpf CPF do anunciante
+     * @param String $dtNascimento data de nascimento do anunciante
+     * @param String $telefone telefone do anunciante
+     * @return Boolean retorna TRUE se os dados forem salvos com sucesso
+     */
+    function validarAnunciante($email, $senha) {
+
+        #invocar métódo  e passar parâmetros
+        $objAnunciante = new modelAnunciante();
+
+        if ($objAnunciante->validarAnunciante($email, $senha) == true) {
+            #Anunciante validado
+            #Criar sessão
+            $_SESSION['email'] = $email;
+            $_SESSION['liberado'] = 'true';
+
+            #redirecionar
+            header("location: ../view/modulo.php?modulo=principal");
+        } else {
+            $_SESSION['liberado'] = null;
+            $_SESSION['msg'] = "E-mail ou senha invalido";
+
+            #redirecionar
+            header("location: ../view/modulo.php?modulo=login");
         }
     }
 

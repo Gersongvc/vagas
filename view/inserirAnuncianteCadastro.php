@@ -1,6 +1,6 @@
 <?php
 #iniciar_sessao
-session_start();
+#session_start();
 
 #função para resolver problema de header
 ob_start();
@@ -12,13 +12,12 @@ header('Content-Type: text/html; charset=UTF-8');
 include_once 'autoload.php';
 
 #cria o objeto de controle
-$cc = new ControlCliente();
+$objCA = new ControlAnunciante();
 
-
-#verfica o o botão 'consultar' foi acionado
+#verfica o o botão 'Inserir' foi acionado
 if (isset($_POST["inserir"])) {
     #passa os dados para inserir
-    $cc->inserir($_POST["nome"], $_POST["cpf"], $_POST["dtNascimento"], $_POST["telefone"]);
+    $objCA->inserirCadastro($_POST['nome'], $_POST['endereco'], $_POST['telefone'], $_POST['email'], $_POST['senha'], $_POST['confirmar']);
 }
 ?>
 
@@ -28,7 +27,7 @@ if (isset($_POST["inserir"])) {
         <meta charset="utf-8">
 
         <!-- define a o titulo do HMTL -->
-        <title>Sistema XYZ</title>
+        <title>Sistema SGAVV</title>
 
         <!-- Link para o CSS do bootstrap -->
         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,29 +47,39 @@ if (isset($_POST["inserir"])) {
             <!-- inserir o menu -->
             <?php
             #mostrar o menu
-            $cc->menu();
-            #$cc->alerta($_SESSION['msg']);
+            $objCA->alerta($_SESSION['msg']);
             ?> 
 
             <!-- Main component for a primary marketing message or call to action -->
             <div class="jumbotron">
                 <fieldset>
-                    <legend>Dados do Cliente</legend>
+                    <legend>Dados do Anunciante</legend>
                     <form method="post">
                         <div class="form-group">
                             <label for="nome">Nome</label>
                             <input class="form-control" required type="text" name="nome" id="nome" />
-                            <label for="cpf">CPF</label>
-                            <input class="form-control" required id="cpf" name="cpf" type="text" title="Qual seu CPF?" maxlength="14" title="Digite o CPF somente numeros">
-                            <label for="dtNascimento">Data Nascimento</label>
-                            <input class="form-control" required id="dtNascimento" name="dtNascimento" type="date" title="Qual sua Data de Nascimento?" maxlength="14">
+                            <label for="endereco">Endereco</label>
+                            <input class="form-control" required id="endereco" name="endereco" type="text" title="Qual seu endereço?">
                             <label for="telefone">Telefone</label>
-                            <input class="form-control" id="telefone" name="telefone" type="text" title="Qual seu telefone?" maxlength="14">
+                            <input class="form-control" required id="telefone" name="telefone" type="text" maxlength="14">
+                            <label for="email">E-mail</label>
+                            <input class="form-control" id="email" name="email" type="email">
+                            <label for="senha">Senha</label>
+                            <input class="form-control" id="senha" name="senha" type="password">
+                            <label for="confirmar">Confirmar Senha</label>
+                            <input class="form-control" id="confirmar" name="confirmar" type="password">
                             </br>
                             <button type="submit" name="inserir" class="btn btn-primary" style="width: 100%;"><span class="glyphicon bg-success"></span>Inserir</button>
                         </div>
                     </form>
                 </fieldset> 
             </div>
+
+
     </body>
+</html>
+
+
+
+</body>
 </html>

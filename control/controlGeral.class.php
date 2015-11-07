@@ -2,7 +2,6 @@
 
 #iniciar_sessao
 #session_start();
-
 #função para resolver problema de header
 ob_start();
 
@@ -94,7 +93,7 @@ class ControlGeral {
         echo'  <div id = "navbar" class = "navbar-collapse collapse">';
         echo' <ul class = "nav navbar-nav">';
         echo' <li class = "active"><a href = "modulo.php?modulo=principal">Principal</a></li>';
-        
+
         #menu Anunciante
         echo' <li class = "dropdown">';
         echo'  <a href = "#" class = "dropdown-toggle" data-toggle = "dropdown" role = "button" aria-haspopup = "true" aria-expanded = "false">Anunciante<span class = "caret"></span></a>';
@@ -116,13 +115,9 @@ class ControlGeral {
         echo' </ul>';
         echo'<ul class="nav navbar-nav navbar-right">';
         echo'<li class="dropdown">';
-        echo' <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Vagas <span class="caret"></span></a>';
+        echo' <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' . $_SESSION['email'] . ' <span class="caret"></span></a>';
         echo'<ul class="dropdown-menu">';
-        echo'<li><a href="#">Alterar Senha</a></li>';
-        echo'<li><a href="#">Configurações</a></li>';
-        echo'<li><a href="#">Sobre</a></li>';
-        echo'<li role="separator" class="divider"></li>';
-        echo'<li><a href="#">Sair</a></li>';
+        echo'<li><a href="../view/modulo.php?modulo=login">Sair</a></li>';
         echo' </ul>';
         echo'</li>';
         echo'</ul>';
@@ -131,4 +126,15 @@ class ControlGeral {
         echo' </nav>';
     }
 
+    function validarSessao() {
+        if ($_SESSION['liberado'] == null) {
+            header("location: ../view/modulo.php?modulo=login");
+        }
+    }
+
+    function destruirSessao(){
+        $_SESSION['email'] = null;
+        $_SESSION['liberado'] = null;
+    }
+    
 }
