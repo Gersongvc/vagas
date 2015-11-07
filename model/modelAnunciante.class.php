@@ -78,20 +78,18 @@ class ModelAnunciante extends modelConexao {
      * @param <tipo do parâmero> $<nome parâmetro> <descrição do parâmetro>
      * @return <tipo do retorno> <descrição do reorno>
      */
-    function consultarAnunciante($nome,$telefone, $email) {
+    function consultarAnunciante($nome, $telefone, $email) {
 
 #setar os dados
         $this->setNome($nome);
         $this->setTelefone($telefone);
         $this->setEmail($email);
-        
+
 //        echo $this->getNome();
 //        echo $this->getTelefone();
 //        echo $this->getEmail();
 //        
 //        break;
-
-
 #montar a consultar (where true serve para selecionar todos os registros)
         $sql = "SELECT * FROM tb_anunciante WHERE TRUE";
 
@@ -115,7 +113,7 @@ class ModelAnunciante extends modelConexao {
 
 #verificar se foi passado algum valor de :<nome campo> 
             if ($this->getNome() != null) {
-                $query->bindValue(':nome', "%".$this->getNome()."%", PDO::PARAM_STR);
+                $query->bindValue(':nome', "%" . $this->getNome() . "%", PDO::PARAM_STR);
             }
 
             if ($this->getTelefone() != null) {
@@ -178,23 +176,31 @@ class ModelAnunciante extends modelConexao {
      * @param <tipo do parâmero> $<nome parâmetro> <descrição do parâmetro>
      * @return <tipo do retorno> <descrição do reorno>
      */
-    public function alterar($parâmetros) {
+    public function alterarAnunciante($id_anunciante, $nome, $endereco, $telefone, $email) {
 
-#setar os dados
-        $this->setNome_atributo($nome_atributo);
+        #setar os dados
+        $this->setId_anunciante($id_anunciante);
+        $this->setNome($nome);
+        $this->setEndereco($endereco);
+        $this->setTelefone($telefone);
+        $this->setEmail($email);
+        #montar a consulta
+        $sql = "UPDATE  tb_anunciante  SET  nome=:nome, endereco=:endereco, telefone=:telefone, email=:email WHERE id_anunciante=:id_anunciante";
 
-#montar a consulta
-        $sql = "UPDATE <nome tabela> SET <nome campo> = :<nome campos> WHERE <nome chave primária> = :<nome campo>";
-
-#realizar a blidagem dos dados
+        #realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
             $query = $bd->prepare($sql);
-            $query->bindValue(':<nome campo>', $this->getNome_atributo(), PDO::PARAM_STR);
+            $query->bindValue(':id_anunciante', $this->getId_anunciante(), PDO::PARAM_INT);
+            $query->bindValue(':nome', $this->getNome(), PDO::PARAM_STR);
+            $query->bindValue(':endereco', $this->getEndereco(), PDO::PARAM_STR);
+            $query->bindValue(':telefone', $this->getTelefone(), PDO::PARAM_STR);
+            $query->bindValue(':email', $this->getEmail(), PDO::PARAM_STR);
             $query->execute();
             return true;
         } catch (PDOException $e) {
-
+ echo $e->getMessage();
+ break;
             return false;
         }
     }
@@ -205,19 +211,19 @@ class ModelAnunciante extends modelConexao {
      * @param <tipo do parâmero> $<nome parâmetro> <descrição do parâmetro>
      * @return <tipo do retorno> <descrição do reorno>
      */
-    public function excluir($parâmetros) {
+    public function excluirAnunciante($id_anunciante) {
 
-#setar os dados
-        $this->setNome_atributo($nome_atributo);
+        #setar os dados
+        $this->setId_anunciante($id_anunciante);
 
-#montar a consulta
-        $sql = "DELETE FROM <nome tabela> WHERE <nome chave primária>=:<nome campo>";
+        #montar a consulta
+        $sql = "DELETE FROM tb_anunciante WHERE id_anunciante =:id_anunciante";
 
-#realizar a blidagem dos dados
+        #realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
             $query = $bd->prepare($sql);
-            $query->bindValue(':<nome campo>', $this->$this->getNome_atributo(), PDO::PARAM_INT);
+            $query->bindValue(':id_anunciante', $this->getId_anunciante(), PDO::PARAM_INT);
             $query->execute();
             return true;
         } catch (PDOException $e) {

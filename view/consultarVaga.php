@@ -1,8 +1,6 @@
-
 <?php
 #iniciar_sessao
-session_start();
-
+#session_start();
 #função para resolver problema de header
 ob_start();
 
@@ -13,7 +11,6 @@ header('Content-Type: text/html; charset=UTF-8');
 include_once 'autoload.php';
 
 $objCV = new ControlVaga();
-
 ?>
 
 <html lang="pt-br">

@@ -99,7 +99,6 @@ class ModelVaga extends modelConexao {
         $this->observacoes = $observacoes;
     }
 
-
     /**
      * Método utilizado para <descrição>
      * @access public 
@@ -107,7 +106,7 @@ class ModelVaga extends modelConexao {
      * @return <tipo do retorno> <descrição do reorno>
      */
     function inserirVaga($uf, $cidade, $endereco, $vagaspara, $tipo, $preco, $alugado, $observacoes) {
-        
+
         #setar os dados
         $this->setUf($uf);
         $this->setCidade($cidade);
@@ -117,11 +116,11 @@ class ModelVaga extends modelConexao {
         $this->setPreco($preco);
         $this->setAlugado($alugado);
         $this->setObservacoes($observacoes);
-     
+
         #montar a consulta
         $sql = "INSERT INTO tb_vaga(id_vaga, uf, cidade, endereco, vagaspara, tipo, preco, alugado, observacoes) VALUES "
-        . "(null, :uf, :cidade, :endereco, :vagaspara, :tipo, :preco, :alugado, :observacoes)";
-        
+                . "(null, :uf, :cidade, :endereco, :vagaspara, :tipo, :preco, :alugado, :observacoes)";
+
         #realizar a blidagem dos dados
         try {
             $bd = $this->conectar();
@@ -141,6 +140,24 @@ class ModelVaga extends modelConexao {
         }
     }
 
+    public function excluirVaga($id_vaga) {
 
+        #setar os dados
+        $this->setId_anunciante($id_vaga);
+
+        #montar a consulta
+        $sql = "DELETE FROM tb_vaga WHERE id_anunciante =:id_vaga";
+
+        #realizar a blidagem dos dados
+        try {
+            $bd = $this->conectar();
+            $query = $bd->prepare($sql);
+            $query->bindValue(':id_vaga', $this->getId_vaga(), PDO::PARAM_INT);
+            $query->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
 }

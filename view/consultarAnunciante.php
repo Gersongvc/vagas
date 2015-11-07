@@ -1,7 +1,6 @@
 <?php
 #iniciar_sessao
 #session_start();
-
 #função para resolver problema de header
 ob_start();
 
@@ -17,11 +16,24 @@ $objCA = new ControlAnunciante();
 #verfica o o botão 'Inserir' foi acionado
 if (isset($_POST["consultar"])) {
     #passa os dados para inserir
-    $anunciantes = $objCA->consultarAnunciantes($_POST['nome'],$_POST['telefone'], $_POST['email']);
-    } else {
+    $anunciantes = $objCA->consultarAnunciantes($_POST['nome'], $_POST['telefone'], $_POST['email']);
+} else {
     #mostrar todos os funcionarios
     $anunciantes = $objCA->consultarAnunciantes(null, null, null);
 }
+
+#verificar se o botão "excluir" foi acionado
+if (isset($_POST["excluir"])) {
+    #passa o id do anunciante para o controle realizar a exclusão
+    $objCA->excluirAnunciante($_POST["id_anunciante"]);
+}
+
+#verfica o o botão 'Altera' foi acionado
+if (isset($_POST["alterar"])) {
+    #passa os dados para inserir
+    $objCA->alterarAnunciante($_POST['id_anunciante'], $_POST['nome'], $_POST['endereco'], $_POST['telefone'], $_POST['email']);
+}
+
 ?>
 
 <html lang="pt-br">
@@ -117,10 +129,10 @@ if (isset($_POST["consultar"])) {
 
             <?php
             #foreach para listar os dados do cliente e definica cada modal para alterar
-            foreach ($objCA as $item) {
+            foreach ($anunciantes as $item) {
                 ?>
                 <!-- modal de alterar -->
-                <div class="modal fade" id="alterar<?php echo $item[id] ?>" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                <div class="modal fade" id="alterar<?php echo $item[id_anunciante] ?>" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -129,10 +141,23 @@ if (isset($_POST["consultar"])) {
                             </div>
                             <div class="modal-body">
 
-                                <?php
-                                #inclui a view alterar cliente
-                                #include 'alterarAnunciante.php';
-                                ?>       
+                                <fieldset>
+                                    <form method="post">
+                                        <div class="form-group">
+                                            <input type="hidden" name="id_anunciante" value="<?php echo $item[id_anunciante]; ?>" >
+                                            <label for="nome">Nome</label>
+                                            <input class="form-control" required type="text" name="nome" id="nome" value="<?php echo $item[nome] ?>"/>
+                                            <label for="endereco">Endereco</label>
+                                            <input class="form-control" required id="endereco" name="endereco" type="text" title="Qual seu endereço?" value="<?php echo $item[endereco] ?>"/>
+                                            <label for="telefone">Telefone</label>
+                                            <input class="form-control" required id="telefone" name="telefone" type="text" maxlength="14" value="<?php echo $item[telefone] ?>" />
+                                            <label for="email">E-mail</label>
+                                            <input class="form-control" id="email" name="email" type="email" value="<?php echo $item[email] ?>"/>
+                                            </br>
+                                            <button type="submit" name="alterar" class="btn btn-primary" style="width: 100%;"><span class="glyphicon bg-success"></span>Alterar</button>
+                                        </div>
+                                    </form>
+                                </fieldset> 
 
                             </div>
                         </div>
@@ -144,10 +169,10 @@ if (isset($_POST["consultar"])) {
 
             <?php
             #foreach para listar os dados do cliente e definica cada modal para alterar
-            foreach ($objCA as $item) {
+            foreach ($anunciantes as $item) {
                 ?>
                 <!-- modal de exluir -->
-                <div class="modal fade" id="excluir<?php echo $item[id] ?>" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                <div class="modal fade" id="excluir<?php echo $item[id_anunciante] ?>" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -156,10 +181,19 @@ if (isset($_POST["consultar"])) {
                             </div>
                             <div class="modal-body">
 
-                                <?php
-                                #inclui a view alterar cliente
-                                # include 'excluirAnunciante.php';
-                                ?>       
+                                <fieldset>
+                                    <form id="anunciante" name="anunciante" method="post" action="">
+                                        <!-- dados do anunciante -->
+
+                                        <label for="nome">Nome</label>
+                                        <input class="form-control"required type="text" readonly="true" name="nome" id="nome" value="<?php echo $item[nome]; ?>"/>
+                                        <!-- input oculto para informar o id do anunciante-->
+                                        <input type="hidden" name="id_anunciante" value="<?php echo $item[id_anunciante]; ?>" >
+                                        </br>
+                                        <!-- botao para submeter o formulário -->
+                                        <button id="enviar" type="submit" name="excluir"  class="btn btn-danger btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Excluir</button>
+                                    </form>
+                                </fieldset>
 
                             </div>
                         </div>
