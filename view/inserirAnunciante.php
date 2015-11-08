@@ -12,7 +12,13 @@ header('Content-Type: text/html; charset=UTF-8');
 include_once 'autoload.php';
 
 #cria o objeto de controle
+$cg = new ControlGeral();
+#validar sessao
+$cg->validarSessao();
+
+#cria o objeto de controle
 $objCA = new ControlAnunciante();
+
 
 #verfica o o botão 'Inserir' foi acionado
 if (isset($_POST["inserir"])) {

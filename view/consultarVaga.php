@@ -10,6 +10,11 @@ header('Content-Type: text/html; charset=UTF-8');
 #carrega as classes automaticamente
 include_once 'autoload.php';
 
+#cria o objeto de controle
+$cg = new ControlGeral();
+#validar sessao
+$cg->validarSessao();
+
 $objCV = new ControlVaga();
 ?>
 
